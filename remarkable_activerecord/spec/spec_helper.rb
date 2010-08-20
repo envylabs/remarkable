@@ -2,13 +2,16 @@
 require 'rubygems'
 require 'rspec'
 
-RAILS_VERSION = ENV['RAILS_VERSION'] || '3.0.0.beta4'
+RAILS_VERSION = ENV['RAILS_VERSION'] || '3.0.0.rc'
 
 gem 'activesupport', RAILS_VERSION
 require 'active_support'
 
 gem 'activerecord', RAILS_VERSION
 require 'active_record'
+
+gem 'activemodel', RAILS_VERSION
+require 'active_model'
 
 require File.expand_path('path_helpers', File.join(File.dirname(__FILE__), '/../../'))
 load_project_path :remarkable, :remarkable_activemodel, :remarkable_activerecord

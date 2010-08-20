@@ -47,7 +47,7 @@ module Remarkable
           end
 
           def protected_attributes
-            @protected_attributes = subject_class.protected_attributes
+            @protected_attributes = ::ActiveModel::MassAssignmentSecurity::BlackList.new((subject_class.new.attributes.keys - subject_class.accessible_attributes.to_a) + subject_class.protected_attributes)
           end
       end
 
