@@ -8,7 +8,8 @@ module Remarkable
         optionals :with, :splat => true
         
         # Chained scopes taken from: http://m.onkey.org/2010/1/22/active-record-query-interface
-        optionals :where, :having, :select, :group, :order, :limit, :offset, :joins, :includes, :lock, :readonly, :from
+        optionals :where, :splat => true
+        optionals :having, :select, :group, :order, :limit, :offset, :joins, :includes, :lock, :readonly, :from
 
         protected
 
@@ -38,7 +39,13 @@ module Remarkable
           def arel(model, scopes = nil)
             return model.scoped unless scopes
             scopes.inject(model.scoped) do |chain, (cond, option)|
-              chain.send(cond, option)
+              if cond == :where && option.is_a?(Array) && !option.first.is_a?(String)
+                option.inject(chain) do |chain, where|
+                  chain.send(cond, where)
+                end
+              else
+                chain.send(cond, option)
+              end
             end.arel
           end
 
